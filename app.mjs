@@ -7,6 +7,12 @@ const server = http.createServer((req, res) => {
 
   if (req.method == "GET") {
     service.getTodoList(req, res);
+  } else if (req.method == "POST") {
+    service.createTodo(req, res);
+  } else if (req.method == "PUT") {
+    service.updateTodo(req, res);
+  } else if (req.method == "DELETE") {
+    service.deleteTodo(req, res);
   }
 });
 console.log("Server Started on port 3000");

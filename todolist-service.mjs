@@ -1,6 +1,6 @@
 export class TodoListService {
 
-  todolist = ["Bagus", "Dwi", "Kurniawan"];
+  todolist = ["bagus", "dwi", "kurniawan"];
 
   getJsonTodoList(){
     return JSON.stringify({
@@ -18,5 +18,39 @@ export class TodoListService {
   getTodoList(req, res){
     res.write(this.getJsonTodoList());
     res.end();
-  }
+  };
+
+  createTodo(req, res){
+    req.addListener("data", (data) => {
+      const body = JSON.parse(data.toString());
+      this.todolist.push(body.todo);
+
+      res.write(this.getJsonTodoList());
+      res.end();
+    })
+  };
+
+  updateTodo(req, res){
+    req.addListener("data", (data) => {
+      const body = JSON.parse(data.toString());
+      if (this.todolist[body.id]) {
+        this.todolist[body.id] = body.todo;
+      }
+
+      res.write(this.getJsonTodoList());
+      res.end();
+    });
+  };
+
+  deleteTodo(req, res){
+    req.addListener("data", (data) => {
+      const body = JSON.parse(data.toString());
+      if (this.todolist[body.id]) {
+        this.todolist.splice(body.id,1);
+      }
+
+      res.write(this.getJsonTodoList());
+      res.end();
+    });
+  };
 }
